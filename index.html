@@ -1106,11 +1106,7 @@
                     transitionOverlay.classList.add('active');
                     
                     setTimeout(() => {
-                        // In production, redirect to calculator page
-                        // window.location.href = 'calculator.html';
-                        
-                        alert('Redirecting to Newton-Raphson Calculator...\n(In production: window.location.href = "calculator.html")');
-                        transitionOverlay.classList.remove('active');
+                        window.location.href = 'calculate.html';
                     }, 600);
                 });
             }

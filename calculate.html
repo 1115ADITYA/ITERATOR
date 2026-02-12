@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton-Raphson Calculator - MathCore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0A2540;
+            --primary-light: #1A3A5C;
+            --accent: #00D4FF;
+            --accent-dark: #0099CC;
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B7280;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            background: var(--bg-secondary);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 72px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'IBM Plex Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-title {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 72px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-family: 'IBM Plex Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Calculator Section */
+        .calculator-wrapper {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            position: sticky;
+            top: 92px;
+        }
+
+        .card-title {
+            font-family: 'IBM Plex Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-helper {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'IBM Plex Mono', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-calculate {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-calculate:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-reset:hover {
+            background: var(--bg-secondary);
+            border-color: var(--text-secondary);
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--bg-secondary);
+        }
+
+        .result-title {
+            font-family: 'IBM Plex Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .result-badge {
+            padding: 0.5rem 1rem;
+            background: var(--success);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .result-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-item {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .summary-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Iteration Cards */
+        .iterations-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .iteration-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .iteration-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+        }
+
+        .iteration-card.final {
+            border-color: var(--success);
+            background: linear-gradient(to right, rgba(16, 185, 129, 0.05), transparent);
+        }
+
+        .iteration-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .iteration-number {
+            font-family: 'IBM Plex Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .iteration-badge {
+            padding: 0.25rem 0.75rem;
+            background: var(--accent);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .iteration-badge.final-badge {
+            background: var(--success);
+        }
+
+        .iteration-content {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .calculation-step {
+            background: var(--bg-secondary);
+            padding: 1.25rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .step-label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .step-formula {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+        }
+
+        .step-explanation {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-top: 0.5rem;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .value-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .value-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .value-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .convergence-info {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: linear-gradient(to right, rgba(0, 212, 255, 0.05), transparent);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .convergence-info.converged {
+            background: linear-gradient(to right, rgba(16, 185, 129, 0.05), transparent);
+            border-left-color: var(--success);
+        }
+
+        /* Summary Table */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .summary-table th {
+            background: var(--bg-secondary);
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .summary-table td {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .welcome-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .welcome-section.hidden {
+            display: none;
+        }
+
+        .example-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 12px;
+            padding: 2.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .example-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .example-title::before {
+            content: "✨";
+            font-size: 2rem;
+        }
+
+        .example-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .example-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            opacity: 0.95;
+        }
+
+        .example-list li:last-child {
+            border-bottom: none;
+        }
+
+        .example-list li::before {
+            content: "→";
+            font-weight: 600;
+            font-size: 1.2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .example-code {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'IBM Plex Mono';
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .example-code div {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .calculator-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .calculator-card {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 2rem 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .calculator-card,
+            .result-card,
+            .iteration-card {
+                padding: 1.5rem;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .result-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="landing.html" class="logo">
+                <div class="logo-icon">∫</div>
+                <span>MathCore</span>
+            </a>
+            <div class="nav-title">Newton-Raphson Calculator</div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Newton-Raphson Method Calculator</h1>
+            <p class="page-subtitle">Find roots of equations with detailed step-by-step iterations</p>
+        </div>
+
+        <div class="calculator-wrapper">
+            <!-- Calculator Input -->
+            <div class="calculator-card">
+                <h2 class="card-title">Input Parameters</h2>
+                
+                <form id="calculatorForm">
+                    <div class="form-group">
+                        <label class="form-label" for="function">Function f(x)</label>
+                        <input 
+                            type="text" 
+                            id="function" 
+                            class="form-input" 
+                            placeholder="x^2 - 4"
+                            required
+                        >
+                        <span class="form-helper">Enter the function (use ^ for power, * for multiply)</span>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label class="form-label" for="initialGuess">Initial Guess (x₀)</label>
+                            <input 
+                                type="number" 
+                                id="initialGuess" 
+                                class="form-input" 
+                                placeholder="1"
+                                step="any"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="iterations">Number of Iterations</label>
+                            <input 
+                                type="number" 
+                                id="iterations" 
+                                class="form-input" 
+                                placeholder="10"
+                                min="1"
+                                max="50"
+                                value="10"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-calculate">Calculate Root</button>
+                    <button type="button" class="btn-reset" id="resetBtn">Reset All</button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <!-- Welcome Section -->
+                <div class="welcome-section" id="welcomeSection">
+                    <div class="example-card">
+                        <div class="example-title">Example Calculations</div>
+                        <ul class="example-list">
+                            <li>x² - 4 (Find √4)</li>
+                            <li>x³ - 2 (Find ∛2)</li>
+                            <li>sin(x) - x/2 (Transcendental)</li>
+                            <li>2x³ - 3x - 6 (Polynomial)</li>
+                        </ul>
+                        <div class="example-code">
+                            <div><strong>Try this:</strong></div>
+                            <div>f(x): <span style="color: var(--accent);">x^2 - 4</span></div>
+                            <div>x₀: <span style="color: var(--accent);">3</span></div>
+                            <div>Iterations: <span style="color: var(--accent);">5</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Card -->
+                <div class="result-card">
+                    <div class="result-header">
+                        <h2 class="result-title">Final Result</h2>
+                        <span class="result-badge" id="statusBadge">Converged</span>
+                    </div>
+
+                    <div class="result-summary" id="resultSummary">
+                        <div style="text-align: center; padding: 3rem 2rem; color: var(--text-secondary);">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                            <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Ready to Calculate</h3>
+                            <p>Enter a function and initial guess, then click "Calculate" to see step-by-step Newton-Raphson iterations.</p>
+                        </div>
+                    </div>
+
+                    <table class="summary-table" id="summaryTable" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Iteration (n)</th>
+                                <th>x<sub>n</sub></th>
+                                <th>f(x<sub>n</sub>)</th>
+                                <th>f'(x<sub>n</sub>)</th>
+                                <th>x<sub>n+1</sub></th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Detailed Iterations -->
+                <div class="result-card">
+                    <h2 class="result-title">Detailed Step-by-Step Iterations</h2>
+                    <div class="iterations-container" id="iterationsContainer">
+                        <div style="text-align: center; padding: 3rem 2rem; color: var(--text-secondary);">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📝</div>
+                            <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Iteration Details</h3>
+                            <p>Your detailed iteration steps will appear here after calculation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Math expression parser and evaluator
+        function evaluateExpression(expr, x) {
+            try {
+                // First, replace function names with Math equivalents (BEFORE x substitution)
+                let expression = expr;
+                
+                // Replace math functions first
+                expression = expression.replace(/\bsqrt\b/g, 'Math.sqrt');
+                expression = expression.replace(/\bsin\b/g, 'Math.sin');
+                expression = expression.replace(/\bcos\b/g, 'Math.cos');
+                expression = expression.replace(/\btan\b/g, 'Math.tan');
+                expression = expression.replace(/\blog\b/g, 'Math.log');
+                expression = expression.replace(/\bln\b/g, 'Math.log');
+                expression = expression.replace(/\bexp\b/g, 'Math.exp');
+                expression = expression.replace(/\babs\b/g, 'Math.abs');
+                expression = expression.replace(/\bfloor\b/g, 'Math.floor');
+                expression = expression.replace(/\bceil\b/g, 'Math.ceil');
+                expression = expression.replace(/\bpow\b/g, 'Math.pow');
+                
+                // Replace mathematical constants
+                expression = expression.replace(/\bpi\b/gi, '(Math.PI)');
+                expression = expression.replace(/\be\b/g, '(Math.E)');
+                
+                // Replace power operator
+                expression = expression.replace(/\^/g, '**');
+                
+                // Add multiplication operators before x (e.g., 2x -> 2*x)
+                expression = expression.replace(/(\d)\s*x\b/g, '$1*x');
+                expression = expression.replace(/\)(\s*)x\b/g, ')*x');
+                
+                // Add multiplication operators after x (e.g., x2 -> x*2, x( -> x*()
+                expression = expression.replace(/\bx(\s*)(\d)/g, 'x*$2');
+                expression = expression.replace(/\bx(\s*)\(/g, 'x*(');
+                
+                // Replace x with the actual value (in parentheses to avoid parsing issues)
+                expression = expression.replace(/\bx\b/g, `(${x})`);
+                
+                // Safe evaluation with limited context
+                const result = Function('"use strict"; return (' + expression + ')')();
+                
+                if (!isFinite(result)) {
+                    throw new Error('Result is not a valid number');
+                }
+                
+                return result;
+            } catch (error) {
+                throw new Error('Invalid expression: ' + error.message);
+            }
+        }
+
+        // Calculate derivative numerically using central difference method
+        function numericalDerivative(funcStr, x) {
+            const h = 0.0001; // Small step size
+            const fxPlusH = evaluateExpression(funcStr, x + h);
+            const fxMinusH = evaluateExpression(funcStr, x - h);
+            return (fxPlusH - fxMinusH) / (2 * h);
+        }
+
+        // Newton-Raphson Calculator
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get input values
+            const functionStr = document.getElementById('function').value.trim();
+            const x0Str = document.getElementById('initialGuess').value.trim();
+            const iterationsStr = document.getElementById('iterations').value.trim();
+            
+            // Validate inputs
+            if (!functionStr) {
+                alert('Please enter a function');
+                document.getElementById('function').focus();
+                return;
+            }
+            
+            if (!x0Str) {
+                alert('Please enter an initial guess');
+                document.getElementById('initialGuess').focus();
+                return;
+            }
+            
+            if (!iterationsStr) {
+                alert('Please enter number of iterations');
+                document.getElementById('iterations').focus();
+                return;
+            }
+            
+            const x0 = parseFloat(x0Str);
+            const maxIterations = parseInt(iterationsStr);
+            
+            if (isNaN(x0)) {
+                alert('Initial guess must be a valid number');
+                document.getElementById('initialGuess').focus();
+                return;
+            }
+            
+            if (isNaN(maxIterations) || maxIterations < 1 || maxIterations > 50) {
+                alert('Number of iterations must be between 1 and 50');
+                document.getElementById('iterations').focus();
+                return;
+            }
+            
+            // Validate function can be evaluated
+            try {
+                evaluateExpression(functionStr, 0);
+            } catch (error) {
+                alert('Error in function: ' + error.message + '\nMake sure to use valid syntax (e.g., x^2 - 4, sin(x), sqrt(x))');
+                document.getElementById('function').focus();
+                return;
+            }
+            
+            try {
+                // Perform Newton-Raphson iterations
+                const results = newtonRaphson(functionStr, x0, maxIterations);
+                
+                // Display results
+                displayResults(results, functionStr);
+                
+                // Show results section
+                document.getElementById('resultsSection').classList.add('active');
+                
+                // Scroll to results
+                setTimeout(() => {
+                    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            } catch (error) {
+                alert('Calculation Error: ' + error.message);
+            }
+        });
+
+        function newtonRaphson(funcStr, x0, maxIter) {
+            const iterations = [];
+            let xn = x0;
+            
+            for (let n = 0; n <= maxIter; n++) {
+                const fx = evaluateExpression(funcStr, xn);
+                const fpx = numericalDerivative(funcStr, xn);
+                
+                if (Math.abs(fpx) < 1e-10) {
+                    throw new Error('Derivative is too close to zero. Choose a different initial guess.');
+                }
+                
+                const xn1 = xn - (fx / fpx);
+                const error = Math.abs(xn1 - xn);
+                
+                iterations.push({
+                    n: n,
+                    xn: xn,
+                    fx: fx,
+                    fpx: fpx,
+                    xn1: xn1,
+                    error: error
+                });
+                
+                xn = xn1;
+            }
+            
+            return {
+                iterations: iterations,
+                finalRoot: iterations[iterations.length - 1].xn1,
+                totalIterations: iterations.length
+            };
+        }
+
+        function displayResults(results, funcStr) {
+            const { iterations, finalRoot, totalIterations } = results;
+            
+            // Update status badge
+            const statusBadge = document.getElementById('statusBadge');
+            statusBadge.textContent = 'Completed ✓';
+            statusBadge.style.background = 'var(--success)';
+            
+            // Display summary
+            // Build x sequence with actual values (x1=1.8571, x2=1.7871, etc.)
+            const xSequence = iterations.map((iter, idx) => `x${iter.n}=${iter.xn1.toFixed(4)}`).join(', ');
+            
+            const summaryHTML = `
+                <div class="summary-item">
+                    <div class="summary-label">Solution Sequence</div>
+                    <div class="summary-value" style="font-size: 0.9rem; word-break: break-word;">${xSequence}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Final Root</div>
+                    <div class="summary-value">${finalRoot.toFixed(4)}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Iterations</div>
+                    <div class="summary-value">${totalIterations}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Final Error</div>
+                    <div class="summary-value">${iterations[iterations.length - 1].error.toExponential(4)}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Final f(x)</div>
+                    <div class="summary-value">${evaluateExpression(funcStr, finalRoot).toExponential(4)}</div>
+                </div>
+            `;
+            document.getElementById('resultSummary').innerHTML = summaryHTML;
+            
+            // Hide welcome section
+            const welcomeSection = document.getElementById('welcomeSection');
+            if (welcomeSection) {
+                welcomeSection.classList.add('hidden');
+            }
+            
+            // Display summary table
+            const table = document.getElementById('summaryTable');
+            table.style.display = 'table';
+            const tableBody = document.getElementById('summaryTableBody');
+            tableBody.innerHTML = iterations.map(iter => `
+                <tr>
+                    <td>${iter.n}</td>
+                    <td>${iter.xn.toFixed(4)}</td>
+                    <td>${iter.fx.toFixed(4)}</td>
+                    <td>${iter.fpx.toFixed(4)}</td>
+                    <td>${iter.xn1.toFixed(4)}</td>
+                    <td>${iter.error.toExponential(4)}</td>
+                </tr>
+            `).join('');
+            
+            // Display detailed iterations
+            const iterationsContainer = document.getElementById('iterationsContainer');
+            iterationsContainer.innerHTML = iterations.map((iter, index) => {
+                const isLast = index === iterations.length - 1;
+                
+                return `
+                    <div class="iteration-card ${isLast ? 'final' : ''}">
+                        <div class="iteration-header">
+                            <div class="iteration-number">Iteration ${iter.n}</div>
+                            ${isLast ? '<span class="iteration-badge final-badge">Final</span>' : `<span class="iteration-badge">Step ${iter.n}</span>`}
+                        </div>
+                        
+                        <div class="iteration-content">
+                            <div class="calculation-step">
+                                <div class="step-label">Step 1: Function Formula</div>
+                                <div class="step-formula">f(x) = ${funcStr}</div>
+                                <div class="step-explanation">
+                                    This is the original function we need to find the root for.
+                                </div>
+                            </div>
+                            
+                            <div class="calculation-step">
+                                <div class="step-label">Step 2: Substitute x<sub>${iter.n}</sub> = ${iter.xn.toFixed(4)} into the equation</div>
+                                <div class="step-formula">f(${iter.xn.toFixed(4)}) = ${iter.fx.toFixed(4)}</div>
+                                <div class="step-explanation">
+                                    We substitute x = ${iter.xn.toFixed(4)} into f(x) = ${funcStr} to get f(${iter.xn.toFixed(4)}) = ${iter.fx.toFixed(4)}.
+                                </div>
+                            </div>
+                            
+                            <div class="calculation-step">
+                                <div class="step-label">Step 3: Calculate Derivative at x<sub>${iter.n}</sub></div>
+                                <div class="step-formula">f'(${iter.xn.toFixed(4)}) = ${iter.fpx.toFixed(4)}</div>
+                                <div class="step-explanation">
+                                    The derivative is calculated automatically using numerical differentiation. At x = ${iter.xn.toFixed(4)}, we get f'(x) = ${iter.fpx.toFixed(4)}.
+                                </div>
+                            </div>
+                            
+                            <div class="calculation-step">
+                                <div class="step-label">Step 4: Apply Newton-Raphson Formula</div>
+                                <div class="step-formula">x<sub>${iter.n + 1}</sub> = x<sub>${iter.n}</sub> - f(x<sub>${iter.n}</sub>) / f'(x<sub>${iter.n}</sub>)</div>
+                                <div class="step-formula">x<sub>${iter.n + 1}</sub> = ${iter.xn.toFixed(4)} - (${iter.fx.toFixed(4)}) / (${iter.fpx.toFixed(4)})</div>
+                                <div class="step-formula">x<sub>${iter.n + 1}</sub> = ${iter.xn.toFixed(4)} - ${(iter.fx / iter.fpx).toFixed(4)}</div>
+                                <div class="step-formula">x<sub>${iter.n + 1}</sub> = ${iter.xn1.toFixed(4)}</div>
+                                <div class="step-explanation">
+                                    Using the Newton-Raphson formula, we calculate the next approximation x<sub>${iter.n + 1}</sub> = ${iter.xn1.toFixed(4)}.
+                                </div>
+                            </div>
+                            
+                            <div class="values-grid">
+                                <div class="value-box">
+                                    <div class="value-label">Current x<sub>${iter.n}</sub></div>
+                                    <div class="value-number">${iter.xn.toFixed(4)}</div>
+                                </div>
+                                <div class="value-box">
+                                    <div class="value-label">Next x<sub>${iter.n + 1}</sub></div>
+                                    <div class="value-number">${iter.xn1.toFixed(4)}</div>
+                                </div>
+                                <div class="value-box">
+                                    <div class="value-label">f(x<sub>${iter.n}</sub>)</div>
+                                    <div class="value-number">${iter.fx.toFixed(4)}</div>
+                                </div>
+                                <div class="value-box">
+                                    <div class="value-label">f'(x<sub>${iter.n}</sub>)</div>
+                                    <div class="value-number">${iter.fpx.toFixed(4)}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="convergence-info ${isLast ? 'converged' : ''}">
+                                <strong>${isLast ? '✓ Final Iteration Completed!' : '→ Continue to Next Iteration'}</strong><br>
+                                ${isLast 
+                                    ? `After ${totalIterations} iteration${totalIterations > 1 ? 's' : ''}, we have reached x ≈ ${iter.xn1.toFixed(4)} with f(x) ≈ ${evaluateExpression(funcStr, iter.xn1).toExponential(4)}. The error is ${iter.error.toExponential(4)}.`
+                                    : `Moving to iteration ${iter.n + 1} with the new value x<sub>${iter.n + 1}</sub> = ${iter.xn1.toFixed(4)}.`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Reset button
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('resultsSection').classList.remove('active');
+            
+            // Show welcome section again
+            const welcomeSection = document.getElementById('welcomeSection');
+            if (welcomeSection) {
+                welcomeSection.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
