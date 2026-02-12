@@ -505,70 +505,183 @@
             display: none;
         }
 
-        .example-card {
+        /* Welcome Content Cards */
+        .welcome-content {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            animation: slideIn 0.6s ease-out backwards;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .quick-start {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             border-radius: 12px;
-            padding: 2.5rem;
+            padding: 2rem;
             color: white;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             box-shadow: var(--shadow-lg);
             animation: slideIn 0.8s ease-out;
         }
 
-        .example-title {
+        .quick-start h2 {
             font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
 
-        .example-title::before {
-            content: "✨";
+        .quick-start h2::before {
+            content: "⚡";
             font-size: 2rem;
         }
 
-        .example-list {
+        .steps-list {
             list-style: none;
-            margin-bottom: 1.5rem;
+            counter-reset: step-counter;
         }
 
-        .example-list li {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+        .steps-list li {
+            margin-bottom: 1.25rem;
+            padding-left: 3rem;
+            position: relative;
+            line-height: 1.6;
             opacity: 0.95;
         }
 
-        .example-list li:last-child {
-            border-bottom: none;
-        }
-
-        .example-list li::before {
-            content: "→";
+        .steps-list li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 600;
-            font-size: 1.2rem;
-            animation: pulse 2s ease-in-out infinite;
+            font-size: 1.1rem;
         }
 
-        .example-code {
-            background: rgba(255, 255, 255, 0.15);
+        .use-cases {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            animation: slideIn 0.9s ease-out;
+            animation-delay: 0.1s;
+            animation-fill-mode: both;
+        }
+
+        .use-cases h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .use-cases h2::before {
+            content: "💡";
+            font-size: 1.5rem;
+        }
+
+        .use-case-item {
+            padding: 1.25rem;
+            background: var(--bg-secondary);
             border-radius: 8px;
-            padding: 1rem;
-            font-family: 'IBM Plex Mono';
-            font-size: 0.9rem;
-            margin-top: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
         }
 
-        .example-code div {
+        .use-case-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .use-case-title {
+            color: var(--primary);
+            font-weight: 600;
             margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 4px;
-            background: rgba(0, 212, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .use-case-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .try-example-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.75rem;
+        }
+
+        .try-example-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
         }
 
         /* Responsive */
@@ -585,11 +698,15 @@
 
         @media (max-width: 768px) {
             .main-container {
-                padding: 2rem 1rem;
+                padding: 1.5rem 1rem;
             }
 
             .page-title {
-                font-size: 2rem;
+                font-size: 1.75rem;
+            }
+
+            .page-subtitle {
+                font-size: 1rem;
             }
 
             .calculator-card,
@@ -608,6 +725,164 @@
 
             .values-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .quick-start {
+                padding: 1.5rem;
+            }
+
+            .quick-start h2 {
+                font-size: 1.25rem;
+            }
+
+            .steps-list li {
+                padding-left: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .use-cases {
+                padding: 1.5rem;
+            }
+
+            .use-cases h2 {
+                font-size: 1.1rem;
+            }
+
+            .use-case-item {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 1rem;
+                margin-top: 72px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .page-header {
+                margin-bottom: 2rem;
+            }
+
+            .calculator-card {
+                padding: 1.25rem;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+            }
+
+            .form-label {
+                font-size: 0.9rem;
+            }
+
+            .form-input {
+                padding: 0.65rem 0.85rem;
+                font-size: 0.9rem;
+            }
+
+            .btn-calculate,
+            .btn-reset {
+                padding: 0.85rem 1rem;
+                font-size: 0.95rem;
+            }
+
+            .result-card {
+                padding: 1.25rem;
+            }
+
+            .result-title {
+                font-size: 1.25rem;
+            }
+
+            .iteration-card {
+                padding: 1.25rem;
+            }
+
+            .iteration-number {
+                font-size: 1.1rem;
+            }
+
+            .summary-table {
+                font-size: 0.8rem;
+            }
+
+            .summary-table th,
+            .summary-table td {
+                padding: 0.75rem;
+            }
+
+            .quick-start {
+                padding: 1.25rem;
+            }
+
+            .quick-start h2 {
+                font-size: 1.1rem;
+            }
+
+            .steps-list li {
+                padding-left: 2.25rem;
+                font-size: 0.9rem;
+            }
+
+            .steps-list li::before {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.9rem;
+            }
+
+            .feature-grid {
+                gap: 1rem;
+            }
+
+            .feature-card {
+                padding: 1.25rem;
+            }
+
+            .feature-icon {
+                font-size: 2rem;
+            }
+
+            .feature-card h3 {
+                font-size: 1rem;
+            }
+
+            .feature-card p {
+                font-size: 0.85rem;
+            }
+
+            .use-cases {
+                padding: 1.25rem;
+            }
+
+            .use-cases h2 {
+                font-size: 1rem;
+            }
+
+            .use-case-item {
+                padding: 0.85rem;
+            }
+
+            .use-case-title {
+                font-size: 0.9rem;
+            }
+
+            .use-case-desc {
+                font-size: 0.85rem;
+            }
+
+            .try-example-btn {
+                font-size: 0.85rem;
+                padding: 0.65rem;
             }
         }
     </style>
@@ -646,7 +921,7 @@
                             placeholder="x^2 - 4"
                             required
                         >
-                        <span class="form-helper">Enter the function (use ^ for power, * for multiply)</span>
+                        <span class="form-helper">Use ^ for power, * for multiply</span>
                     </div>
 
                     <div class="input-row">
@@ -663,7 +938,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="iterations">Number of Iterations</label>
+                            <label class="form-label" for="iterations">Iterations</label>
                             <input 
                                 type="number" 
                                 id="iterations" 
@@ -686,19 +961,70 @@
             <div class="results-section" id="resultsSection">
                 <!-- Welcome Section -->
                 <div class="welcome-section" id="welcomeSection">
-                    <div class="example-card">
-                        <div class="example-title">Example Calculations</div>
-                        <ul class="example-list">
-                            <li>x² - 4 (Find √4)</li>
-                            <li>x³ - 2 (Find ∛2)</li>
-                            <li>sin(x) - x/2 (Transcendental)</li>
-                            <li>2x³ - 3x - 6 (Polynomial)</li>
-                        </ul>
-                        <div class="example-code">
-                            <div><strong>Try this:</strong></div>
-                            <div>f(x): <span style="color: var(--accent);">x^2 - 4</span></div>
-                            <div>x₀: <span style="color: var(--accent);">3</span></div>
-                            <div>Iterations: <span style="color: var(--accent);">5</span></div>
+                    <!-- Quick Start -->
+                    <div class="quick-start">
+                        <h2>Quick Start Guide</h2>
+                        <ol class="steps-list">
+                            <li><strong>Enter Function:</strong> Type any mathematical function like <code style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 4px;">x^2 - 4</code> or <code style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 4px;">sin(x)</code></li>
+                            <li><strong>Set Initial Guess:</strong> Provide a starting point (x₀) close to where you expect the root</li>
+                            <li><strong>Choose Iterations:</strong> Select how many iterations to run (typically 5-10 is enough)</li>
+                            <li><strong>Click Calculate:</strong> Get step-by-step breakdown of each iteration with detailed math</li>
+                        </ol>
+                    </div>
+
+                    <!-- Features Grid -->
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📐</div>
+                            <h3>Supported Functions</h3>
+                            <p>sin, cos, tan, sqrt, log, ln, exp, abs, pow, and standard algebraic operations</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h3>Step-by-Step Details</h3>
+                            <p>See every calculation, formula application, and convergence metric explained clearly</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <h3>Fast Convergence</h3>
+                            <p>Newton-Raphson method provides quadratic convergence for finding equation roots</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3>Visual Summary</h3>
+                            <p>Complete iteration table and detailed cards showing all values and errors</p>
+                        </div>
+                    </div>
+
+                    <!-- Use Cases -->
+                    <div class="use-cases">
+                        <h2>Common Applications</h2>
+
+                        <div class="use-case-item">
+                            <div class="use-case-title">🧮 Find Square Roots</div>
+                            <div class="use-case-desc">Solve x² - 4 = 0 to find √4, or any other square root problem</div>
+                            <button class="try-example-btn" onclick="loadExample('x^2 - 4', '3', '5')">Try This Example</button>
+                        </div>
+
+                        <div class="use-case-item">
+                            <div class="use-case-title">📈 Polynomial Roots</div>
+                            <div class="use-case-desc">Find roots of complex polynomials like x³ - 2x + 1 = 0</div>
+                            <button class="try-example-btn" onclick="loadExample('x^3 - 2*x + 1', '1', '8')">Try This Example</button>
+                        </div>
+
+                        <div class="use-case-item">
+                            <div class="use-case-title">🌊 Transcendental Equations</div>
+                            <div class="use-case-desc">Solve sin(x) = x/2 and other non-polynomial equations</div>
+                            <button class="try-example-btn" onclick="loadExample('sin(x) - x/2', '2', '6')">Try This Example</button>
+                        </div>
+
+                        <div class="use-case-item">
+                            <div class="use-case-title">🔬 Engineering Problems</div>
+                            <div class="use-case-desc">Solve physics & engineering equations numerically and efficiently</div>
+                            <button class="try-example-btn" onclick="loadExample('x - cos(x)', '0.5', '5')">Try This Example</button>
                         </div>
                     </div>
                 </div>
@@ -714,14 +1040,14 @@
                         <div style="text-align: center; padding: 3rem 2rem; color: var(--text-secondary);">
                             <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
                             <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Ready to Calculate</h3>
-                            <p>Enter a function and initial guess, then click "Calculate" to see step-by-step Newton-Raphson iterations.</p>
+                            <p>Enter a function and initial guess to get started. Try one of the examples above or create your own!</p>
                         </div>
                     </div>
 
                     <table class="summary-table" id="summaryTable" style="display: none;">
                         <thead>
                             <tr>
-                                <th>Iteration (n)</th>
+                                <th>n</th>
                                 <th>x<sub>n</sub></th>
                                 <th>f(x<sub>n</sub>)</th>
                                 <th>f'(x<sub>n</sub>)</th>
@@ -730,7 +1056,6 @@
                             </tr>
                         </thead>
                         <tbody id="summaryTableBody">
-                            <!-- Will be populated by JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -754,10 +1079,8 @@
         // Math expression parser and evaluator
         function evaluateExpression(expr, x) {
             try {
-                // First, replace function names with Math equivalents (BEFORE x substitution)
                 let expression = expr;
                 
-                // Replace math functions first
                 expression = expression.replace(/\bsqrt\b/g, 'Math.sqrt');
                 expression = expression.replace(/\bsin\b/g, 'Math.sin');
                 expression = expression.replace(/\bcos\b/g, 'Math.cos');
@@ -770,25 +1093,19 @@
                 expression = expression.replace(/\bceil\b/g, 'Math.ceil');
                 expression = expression.replace(/\bpow\b/g, 'Math.pow');
                 
-                // Replace mathematical constants
                 expression = expression.replace(/\bpi\b/gi, '(Math.PI)');
                 expression = expression.replace(/\be\b/g, '(Math.E)');
                 
-                // Replace power operator
                 expression = expression.replace(/\^/g, '**');
                 
-                // Add multiplication operators before x (e.g., 2x -> 2*x)
                 expression = expression.replace(/(\d)\s*x\b/g, '$1*x');
                 expression = expression.replace(/\)(\s*)x\b/g, ')*x');
                 
-                // Add multiplication operators after x (e.g., x2 -> x*2, x( -> x*()
                 expression = expression.replace(/\bx(\s*)(\d)/g, 'x*$2');
                 expression = expression.replace(/\bx(\s*)\(/g, 'x*(');
                 
-                // Replace x with the actual value (in parentheses to avoid parsing issues)
                 expression = expression.replace(/\bx\b/g, `(${x})`);
                 
-                // Safe evaluation with limited context
                 const result = Function('"use strict"; return (' + expression + ')')();
                 
                 if (!isFinite(result)) {
@@ -803,22 +1120,28 @@
 
         // Calculate derivative numerically using central difference method
         function numericalDerivative(funcStr, x) {
-            const h = 0.0001; // Small step size
+            const h = 0.0001;
             const fxPlusH = evaluateExpression(funcStr, x + h);
             const fxMinusH = evaluateExpression(funcStr, x - h);
             return (fxPlusH - fxMinusH) / (2 * h);
+        }
+
+        // Load example function
+        function loadExample(func, guess, iters) {
+            document.getElementById('function').value = func;
+            document.getElementById('initialGuess').value = guess;
+            document.getElementById('iterations').value = iters;
+            document.getElementById('calculatorForm').dispatchEvent(new Event('submit'));
         }
 
         // Newton-Raphson Calculator
         document.getElementById('calculatorForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get input values
             const functionStr = document.getElementById('function').value.trim();
             const x0Str = document.getElementById('initialGuess').value.trim();
             const iterationsStr = document.getElementById('iterations').value.trim();
             
-            // Validate inputs
             if (!functionStr) {
                 alert('Please enter a function');
                 document.getElementById('function').focus();
@@ -852,7 +1175,6 @@
                 return;
             }
             
-            // Validate function can be evaluated
             try {
                 evaluateExpression(functionStr, 0);
             } catch (error) {
@@ -862,16 +1184,10 @@
             }
             
             try {
-                // Perform Newton-Raphson iterations
                 const results = newtonRaphson(functionStr, x0, maxIterations);
-                
-                // Display results
                 displayResults(results, functionStr);
-                
-                // Show results section
                 document.getElementById('resultsSection').classList.add('active');
                 
-                // Scroll to results
                 setTimeout(() => {
                     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 100);
@@ -917,13 +1233,10 @@
         function displayResults(results, funcStr) {
             const { iterations, finalRoot, totalIterations } = results;
             
-            // Update status badge
             const statusBadge = document.getElementById('statusBadge');
             statusBadge.textContent = 'Completed ✓';
             statusBadge.style.background = 'var(--success)';
             
-            // Display summary
-            // Build x sequence with actual values (x1=1.8571, x2=1.7871, etc.)
             const xSequence = iterations.map((iter, idx) => `x${iter.n}=${iter.xn1.toFixed(4)}`).join(', ');
             
             const summaryHTML = `
@@ -950,13 +1263,11 @@
             `;
             document.getElementById('resultSummary').innerHTML = summaryHTML;
             
-            // Hide welcome section
             const welcomeSection = document.getElementById('welcomeSection');
             if (welcomeSection) {
                 welcomeSection.classList.add('hidden');
             }
             
-            // Display summary table
             const table = document.getElementById('summaryTable');
             table.style.display = 'table';
             const tableBody = document.getElementById('summaryTableBody');
@@ -971,7 +1282,6 @@
                 </tr>
             `).join('');
             
-            // Display detailed iterations
             const iterationsContainer = document.getElementById('iterationsContainer');
             iterationsContainer.innerHTML = iterations.map((iter, index) => {
                 const isLast = index === iterations.length - 1;
@@ -993,7 +1303,7 @@
                             </div>
                             
                             <div class="calculation-step">
-                                <div class="step-label">Step 2: Substitute x<sub>${iter.n}</sub> = ${iter.xn.toFixed(4)} into the equation</div>
+                                <div class="step-label">Step 2: Substitute x<sub>${iter.n}</sub> = ${iter.xn.toFixed(4)}</div>
                                 <div class="step-formula">f(${iter.xn.toFixed(4)}) = ${iter.fx.toFixed(4)}</div>
                                 <div class="step-explanation">
                                     We substitute x = ${iter.xn.toFixed(4)} into f(x) = ${funcStr} to get f(${iter.xn.toFixed(4)}) = ${iter.fx.toFixed(4)}.
@@ -1004,7 +1314,7 @@
                                 <div class="step-label">Step 3: Calculate Derivative at x<sub>${iter.n}</sub></div>
                                 <div class="step-formula">f'(${iter.xn.toFixed(4)}) = ${iter.fpx.toFixed(4)}</div>
                                 <div class="step-explanation">
-                                    The derivative is calculated automatically using numerical differentiation. At x = ${iter.xn.toFixed(4)}, we get f'(x) = ${iter.fpx.toFixed(4)}.
+                                    The derivative is calculated using numerical differentiation. At x = ${iter.xn.toFixed(4)}, we get f'(x) = ${iter.fpx.toFixed(4)}.
                                 </div>
                             </div>
                             
@@ -1056,7 +1366,6 @@
             document.getElementById('calculatorForm').reset();
             document.getElementById('resultsSection').classList.remove('active');
             
-            // Show welcome section again
             const welcomeSection = document.getElementById('welcomeSection');
             if (welcomeSection) {
                 welcomeSection.classList.remove('hidden');
