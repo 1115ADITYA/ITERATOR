@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathCore - Enterprise Mathematics Learning Platform</title>
+    <title>MathCore - Newton-Raphson Method Calculator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
@@ -117,23 +117,6 @@
             gap: 1rem;
         }
 
-        .btn-secondary {
-            padding: 0.625rem 1.25rem;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-primary);
-            font-weight: 500;
-            font-size: 0.95rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--primary);
-            background: var(--bg-secondary);
-        }
-
         .btn-primary {
             padding: 0.625rem 1.5rem;
             background: var(--primary);
@@ -152,11 +135,28 @@
             box-shadow: var(--shadow-md);
         }
 
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
         /* Hero Section */
         .hero {
             margin-top: 72px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            padding: 8rem 2rem 6rem;
+            padding: 6rem 2rem;
             position: relative;
             overflow: hidden;
         }
@@ -256,82 +256,20 @@
             box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4);
         }
 
-        .btn-hero-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-hero-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Stats Section */
-        .stats {
-            background: var(--bg-secondary);
-            padding: 3rem 2rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .stats-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            text-align: center;
-        }
-
-        .stat-item {
-            animation: fadeIn 0.8s ease-out;
-            animation-fill-mode: both;
-        }
-
-        .stat-item:nth-child(1) { animation-delay: 0.1s; }
-        .stat-item:nth-child(2) { animation-delay: 0.2s; }
-        .stat-item:nth-child(3) { animation-delay: 0.3s; }
-        .stat-item:nth-child(4) { animation-delay: 0.4s; }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .stat-number {
-            font-family: 'IBM Plex Serif', serif;
-            font-size: 3rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Features Section */
-        .features {
+        /* What is Newton-Raphson Section */
+        .method-info {
             padding: 6rem 2rem;
             background: var(--bg-primary);
         }
 
-        .features-container {
+        .method-container {
             max-width: 1280px;
             margin: 0 auto;
         }
 
         .section-header {
             text-align: center;
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto 4rem;
         }
 
@@ -359,28 +297,206 @@
             line-height: 1.7;
         }
 
-        .features-grid {
+        .method-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+            align-items: center;
         }
 
-        .feature-card {
-            padding: 2.5rem;
+        .content-text h3 {
+            font-family: 'IBM Plex Serif', serif;
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .content-text p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .formula-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .formula {
+            font-family: 'IBM Plex Serif', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            font-style: italic;
+            margin: 1.5rem 0;
+        }
+
+        .formula-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: 1.5rem;
+        }
+
+        /* How it Works Section */
+        .how-it-works {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
             background: white;
             border: 1px solid var(--border);
             border-radius: 12px;
+            padding: 2.5rem;
             transition: all 0.3s ease;
             animation: fadeInUp 0.6s ease-out;
             animation-fill-mode: both;
         }
 
-        .feature-card:nth-child(1) { animation-delay: 0.1s; }
-        .feature-card:nth-child(2) { animation-delay: 0.2s; }
-        .feature-card:nth-child(3) { animation-delay: 0.3s; }
-        .feature-card:nth-child(4) { animation-delay: 0.4s; }
-        .feature-card:nth-child(5) { animation-delay: 0.5s; }
-        .feature-card:nth-child(6) { animation-delay: 0.6s; }
+        .step-card:nth-child(1) { animation-delay: 0.1s; }
+        .step-card:nth-child(2) { animation-delay: 0.2s; }
+        .step-card:nth-child(3) { animation-delay: 0.3s; }
+        .step-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .step-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Example Section */
+        .example-section {
+            padding: 6rem 2rem;
+            background: var(--bg-primary);
+        }
+
+        .example-box {
+            max-width: 900px;
+            margin: 3rem auto 0;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .example-title {
+            font-family: 'IBM Plex Serif', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .example-problem {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .example-problem p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .example-problem .formula {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .iteration-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        .iteration-table th,
+        .iteration-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .iteration-table th {
+            background: var(--bg-secondary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .iteration-table tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .highlight {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        /* Key Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
 
         .feature-card:hover {
             border-color: var(--accent);
@@ -465,53 +581,20 @@
         .footer-container {
             max-width: 1280px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-column h4 {
-            color: white;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column li {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-column a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column a:hover {
-            color: var(--accent);
-        }
-
-        .footer-bottom {
-            max-width: 1280px;
-            margin: 2rem auto 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.875rem;
+            text-align: center;
         }
 
         .footer-logo {
             font-family: 'IBM Plex Serif', serif;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
 
         /* Transition Overlay */
@@ -532,32 +615,176 @@
             opacity: 1;
         }
 
-        /* Responsive */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Tablet Responsive (768px - 1024px) */
+        @media (max-width: 1024px) {
+            .nav-container {
+                padding: 0 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.25rem;
+            }
+
+            .method-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Mobile Responsive (below 768px) */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
 
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .nav-cta {
+                gap: 0.5rem;
+            }
+
+            .btn-primary {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .hero {
+                padding: 4rem 1.5rem;
+            }
+
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.25rem;
             }
 
             .hero p {
                 font-size: 1.1rem;
             }
 
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .btn-hero {
+                width: 100%;
+                justify-content: center;
+            }
+
             .section-title {
-                font-size: 2rem;
+                font-size: 1.875rem;
+            }
+
+            .section-description {
+                font-size: 1rem;
+            }
+
+            .method-info,
+            .how-it-works,
+            .example-section,
+            .features {
+                padding: 4rem 1.5rem;
+            }
+
+            .method-content {
+                gap: 2rem;
+            }
+
+            .content-text h3 {
+                font-size: 1.5rem;
+            }
+
+            .formula {
+                font-size: 1.5rem;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
             }
 
             .features-grid {
                 grid-template-columns: 1fr;
             }
 
-            .footer-bottom {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
+            .example-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .iteration-table {
+                font-size: 0.875rem;
+            }
+
+            .iteration-table th,
+            .iteration-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+
+            .cta-section p {
+                font-size: 1.1rem;
+            }
+
+            .footer-container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Small Mobile (below 480px) */
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+                height: 64px;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .hero h1 {
+                font-size: 1.875rem;
+            }
+
+            .section-title {
+                font-size: 1.625rem;
+            }
+
+            .formula {
+                font-size: 1.25rem;
+            }
+
+            .step-card,
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .iteration-table {
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -570,15 +797,18 @@
         <div class="nav-container">
             <div class="logo">MathCore</div>
             <ul class="nav-links">
-                <li><a href="#platform">Platform</a></li>
-                <li><a href="#solutions">Solutions</a></li>
-                <li><a href="#resources">Resources</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="#about">About Method</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#example">Example</a></li>
+                <li><a href="#features">Features</a></li>
             </ul>
             <div class="nav-cta">
-                <button class="btn-secondary">Sign In</button>
-                <button class="btn-primary" id="navGetStarted">Get Started</button>
+                <button class="btn-primary" id="navGetStarted">Try Calculator</button>
+            </div>
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
     </nav>
@@ -587,90 +817,209 @@
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <span class="hero-label">Enterprise-Grade Learning</span>
-                <h1>Transform Mathematics Education at Scale</h1>
-                <p>Empower your organization with the world's most advanced mathematics learning platform. Trusted by Fortune 500 companies and leading educational institutions worldwide.</p>
+                <span class="hero-label">Numerical Methods</span>
+                <h1>Newton-Raphson Method Calculator</h1>
+                <p>Find roots of equations efficiently using one of the most powerful iterative numerical methods. Fast, accurate, and easy to use.</p>
                 <div class="hero-cta">
                     <button class="btn-hero btn-hero-primary" id="heroGetStarted">
-                        Get Started
+                        Start Calculating
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                    </button>
-                    <button class="btn-hero btn-hero-secondary">
-                        Schedule Demo
                     </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="stats-container">
-            <div class="stat-item">
-                <div class="stat-number">2M+</div>
-                <div class="stat-label">Active Learners</div>
+    <!-- What is Newton-Raphson Section -->
+    <section class="method-info" id="about">
+        <div class="method-container">
+            <div class="section-header">
+                <div class="section-label">Understanding the Method</div>
+                <h2 class="section-title">What is the Newton-Raphson Method?</h2>
+                <p class="section-description">The Newton-Raphson method is a powerful iterative technique for finding approximate solutions to equations of the form f(x) = 0.</p>
             </div>
-            <div class="stat-item">
-                <div class="stat-number">500+</div>
-                <div class="stat-label">Enterprise Clients</div>
+
+            <div class="method-content">
+                <div class="content-text">
+                    <h3>An Efficient Root-Finding Algorithm</h3>
+                    <p>Named after Isaac Newton and Joseph Raphson, this method uses calculus to rapidly converge to the root of a function. It starts with an initial guess and refines it iteratively using the function's derivative.</p>
+                    <p>The method is particularly valued for its quadratic convergence rate, meaning the number of correct decimal places roughly doubles with each iteration when close to the root.</p>
+                    <p><strong>Key Advantages:</strong></p>
+                    <p>• Rapid convergence near the root<br>
+                    • Applicable to a wide range of functions<br>
+                    • Simple implementation<br>
+                    • High accuracy with few iterations</p>
+                </div>
+
+                <div class="formula-box">
+                    <div class="formula-title">The Newton-Raphson Formula</div>
+                    <div class="formula">
+                        x<sub>n+1</sub> = x<sub>n</sub> - f(x<sub>n</sub>) / f'(x<sub>n</sub>)
+                    </div>
+                    <div class="formula-description">
+                        <strong>Where:</strong><br>
+                        x<sub>n+1</sub> = Next approximation<br>
+                        x<sub>n</sub> = Current approximation<br>
+                        f(x<sub>n</sub>) = Function value at x<sub>n</sub><br>
+                        f'(x<sub>n</sub>) = Derivative value at x<sub>n</sub>
+                    </div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-number">150+</div>
-                <div class="stat-label">Countries Served</div>
+        </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="method-container">
+            <div class="section-header">
+                <div class="section-label">Process Breakdown</div>
+                <h2 class="section-title">How the Method Works</h2>
+                <p class="section-description">Follow these four simple steps to find the root of any equation using the Newton-Raphson method.</p>
             </div>
-            <div class="stat-item">
-                <div class="stat-number">98%</div>
-                <div class="stat-label">Success Rate</div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Choose Initial Guess</h3>
+                    <p class="step-description">Select a starting point x₀ close to the expected root. The closer your initial guess, the faster the convergence.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Calculate Function Values</h3>
+                    <p class="step-description">Compute both f(x₀) and f'(x₀) at your initial guess point to determine the tangent line.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Apply the Formula</h3>
+                    <p class="step-description">Use the Newton-Raphson formula to calculate the next approximation: x₁ = x₀ - f(x₀)/f'(x₀).</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Iterate Until Convergence</h3>
+                    <p class="step-description">Repeat steps 2-3 with each new approximation until the difference between successive values is smaller than your tolerance level.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Example Section -->
+    <section class="example-section" id="example">
+        <div class="method-container">
+            <div class="section-header">
+                <div class="section-label">Practical Application</div>
+                <h2 class="section-title">Example: Finding the Root</h2>
+                <p class="section-description">Let's solve a real problem step by step to see the Newton-Raphson method in action.</p>
+            </div>
+
+            <div class="example-box">
+                <h3 class="example-title">Problem: Find the root of f(x) = x² - 4</h3>
+                
+                <div class="example-problem">
+                    <p><strong>Given:</strong></p>
+                    <p class="formula">f(x) = x² - 4</p>
+                    <p class="formula">f'(x) = 2x</p>
+                    <p><strong>Initial Guess:</strong> x₀ = 1</p>
+                    <p><strong>Tolerance:</strong> 0.0001</p>
+                </div>
+
+                <table class="iteration-table">
+                    <thead>
+                        <tr>
+                            <th>Iteration (n)</th>
+                            <th>xₙ</th>
+                            <th>f(xₙ)</th>
+                            <th>f'(xₙ)</th>
+                            <th>xₙ₊₁</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>1.000000</td>
+                            <td>-3.000000</td>
+                            <td>2.000000</td>
+                            <td>2.500000</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2.500000</td>
+                            <td>2.250000</td>
+                            <td>5.000000</td>
+                            <td>2.050000</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2.050000</td>
+                            <td>0.202500</td>
+                            <td>4.100000</td>
+                            <td>2.000610</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>2.000610</td>
+                            <td>0.002440</td>
+                            <td>4.001220</td>
+                            <td class="highlight">2.000000</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="example-problem">
+                    <p><strong>Result:</strong> The method converged to the root x ≈ 2.000000 in just 4 iterations!</p>
+                    <p>As we can see, each iteration brings us significantly closer to the true root (x = 2).</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features">
-        <div class="features-container">
+    <section class="features" id="features">
+        <div class="method-container">
             <div class="section-header">
-                <div class="section-label">Platform Features</div>
-                <h2 class="section-title">Everything You Need to Excel in Mathematics</h2>
-                <p class="section-description">Our comprehensive platform combines cutting-edge technology with proven pedagogical methods to deliver measurable results.</p>
+                <div class="section-label">Why Choose Our Calculator</div>
+                <h2 class="section-title">Key Features</h2>
             </div>
 
             <div class="features-grid">
                 <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Fast Convergence</h3>
+                    <p class="feature-description">Quadratic convergence rate means you get accurate results in just a few iterations.</p>
+                </div>
+
+                <div class="feature-card">
                     <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Advanced Analytics</h3>
-                    <p class="feature-description">Real-time insights into learning patterns, performance metrics, and personalized recommendations powered by AI.</p>
+                    <h3 class="feature-title">Detailed Iterations</h3>
+                    <p class="feature-description">See every step of the calculation with a complete iteration table and intermediate values.</p>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">🎓</div>
-                    <h3 class="feature-title">Adaptive Learning</h3>
-                    <p class="feature-description">Dynamic curriculum that adjusts to individual learning pace and style, ensuring optimal knowledge retention.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3 class="feature-title">Enterprise Security</h3>
-                    <p class="feature-description">Bank-level encryption, SSO integration, and compliance with global data protection standards.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🌐</div>
-                    <h3 class="feature-title">Global Scalability</h3>
-                    <p class="feature-description">Cloud infrastructure supporting millions of concurrent users across multiple time zones and regions.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🤝</div>
-                    <h3 class="feature-title">Integration Ready</h3>
-                    <p class="feature-description">Seamless integration with existing LMS, HR systems, and productivity tools through robust APIs.</p>
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">High Precision</h3>
+                    <p class="feature-description">Customize tolerance levels and get results accurate to as many decimal places as you need.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">📱</div>
-                    <h3 class="feature-title">Multi-Platform Access</h3>
-                    <p class="feature-description">Native applications for web, iOS, and Android with offline capabilities and cross-device synchronization.</p>
+                    <h3 class="feature-title">Responsive Design</h3>
+                    <p class="feature-description">Works perfectly on desktop, tablet, and mobile devices for calculations on the go.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-title">Multiple Functions</h3>
+                    <p class="feature-description">Support for polynomial, trigonometric, exponential, and custom functions.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3 class="feature-title">Export Results</h3>
+                    <p class="feature-description">Download your calculations and iteration tables for reports and documentation.</p>
                 </div>
             </div>
         </div>
@@ -679,10 +1028,10 @@
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="cta-container">
-            <h2>Ready to Transform Your Math Education?</h2>
-            <p>Join thousands of organizations worldwide that trust MathCore to deliver exceptional learning outcomes.</p>
+            <h2>Ready to Start Calculating?</h2>
+            <p>Try our Newton-Raphson calculator now and experience fast, accurate root-finding for your mathematical problems.</p>
             <button class="btn-hero btn-hero-primary" id="ctaGetStarted">
-                Start Your Free Trial
+                Launch Calculator
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -693,50 +1042,9 @@
     <!-- Footer -->
     <footer>
         <div class="footer-container">
-            <div class="footer-column">
-                <h4>Platform</h4>
-                <ul>
-                    <li><a href="#">Features</a></li>
-                    <li><a href="#">Integrations</a></li>
-                    <li><a href="#">Security</a></li>
-                    <li><a href="#">API Documentation</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Solutions</h4>
-                <ul>
-                    <li><a href="#">For Education</a></li>
-                    <li><a href="#">For Enterprise</a></li>
-                    <li><a href="#">For Government</a></li>
-                    <li><a href="#">Case Studies</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Resources</h4>
-                <ul>
-                    <li><a href="#">Documentation</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Webinars</a></li>
-                    <li><a href="#">Research</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Company</h4>
-                <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
             <div class="footer-logo">MathCore</div>
-            <div>© 2026 MathCore. All rights reserved.</div>
-            <div>
-                <a href="#" style="margin-right: 1.5rem;">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-            </div>
+            <p class="footer-text">Professional Mathematics Tools & Educational Resources</p>
+            <p class="footer-text">© 2026 MathCore. All rights reserved.</p>
         </div>
     </footer>
 
@@ -766,10 +1074,10 @@
                     transitionOverlay.classList.add('active');
                     
                     setTimeout(() => {
-                        // In production, redirect to main page
-                        // window.location.href = 'dashboard.html';
+                        // In production, redirect to calculator page
+                        // window.location.href = 'calculator.html';
                         
-                        alert('Redirecting to platform dashboard...\n(In production: window.location.href = "dashboard.html")');
+                        alert('Redirecting to Newton-Raphson Calculator...\n(In production: window.location.href = "calculator.html")');
                         transitionOverlay.classList.remove('active');
                     }, 600);
                 });
@@ -807,8 +1115,8 @@
             });
         }, observerOptions);
 
-        // Observe all feature cards
-        document.querySelectorAll('.feature-card').forEach(card => {
+        // Observe all cards
+        document.querySelectorAll('.step-card, .feature-card').forEach(card => {
             observer.observe(card);
         });
     </script>
