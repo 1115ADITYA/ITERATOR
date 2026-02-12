@@ -1,0 +1,10 @@
+{
+  "name": "mathcore-landing",
+  "version": "1.0.0",
+  "description": "MathCore - Enterprise Mathematics Learning Platform",
+  "private": true,
+  "scripts": {
+    "dev": "serve .",
+    "build": "echo 'Static site'"
+  }
+}
